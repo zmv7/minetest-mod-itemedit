@@ -38,8 +38,9 @@ local function iefs(name, witem, index)
 	"field_close_on_enter[wield_overlay;false]" ..
 	"field[0.5,7.7;3.9,1;wield_scale;Wield scale (X, Y, Z);"..wield_scale.."]" ..
 	"field_close_on_enter[wield_scale;false]" ..
-	"textarea[4.6,0.4;11.5,10;toolcaps;Tool capabilities;"..F(toolcaps).."]" ..
-	"button[0.2,8.2;3.9,1;apply;Apply]")
+	"textarea[4.6,0.4;11.5,9.1;toolcaps;Tool capabilities;"..F(toolcaps).."]" ..
+	"button[0.2,8.2;3.9,1;apply;Apply]" ..
+	"button[4.3,8.2;11.5,1;apply_toolcaps;Apply toolcaps]")
 end
 
 minetest.register_privilege("itemedit","Allows to use item editor")
@@ -77,6 +78,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		meta:set_string("wield_image",fields.wield_image)
 		meta:set_string("wield_overlay",fields.wield_overlay)
 		meta:set_string("wield_scale",fields.wield_scale)
+		meta:set_tool_capabilities(out)
+		player:set_wielded_item(witem)
+	end
+	if fields.apply_toolcaps then
 		if not fields.toolcaps or fields.toolcaps == "" then
 			meta:set_tool_capabilities(nil)
 			player:set_wielded_item(witem)
